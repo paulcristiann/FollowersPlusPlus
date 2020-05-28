@@ -1,0 +1,230 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms"
+             xmlns:cards="clr-namespace:Syncfusion.XForms.Cards;assembly=Syncfusion.Cards.XForms"
+             xmlns:gradient="clr-namespace:Syncfusion.XForms.Graphics;assembly=Syncfusion.Core.XForms"
+             xmlns:listView="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
+             xmlns:svg="clr-namespace:FollowersPlusPlus.Controls" xmlns:viewModel="clr-namespace:FollowersPlusPlus.ViewModels.ToDelete" xmlns:busyindicator="clr-namespace:Syncfusion.SfBusyIndicator.XForms;assembly=Syncfusion.SfBusyIndicator.XForms"
+             x:Class="FollowersPlusPlus.Views.Profile.InstagramProfilePage"
+             NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <!--  Binding context for Health Profile Page  -->
+    <ContentPage.BindingContext>
+        <viewModel:ProfileViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+
+        <ScrollView BackgroundColor="{DynamicResource Gray-100}">
+            <StackLayout>
+
+                <busyindicator:SfBusyIndicator x:Name="busyindicator" 
+                                           HorizontalOptions="CenterAndExpand"
+                                           VerticalOptions="CenterAndExpand"
+                                           ViewBoxHeight="100"
+                                           ViewBoxWidth="100" />
+
+                <Grid x:Name="page_content">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid RowSpacing="0" HeightRequest="410">
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <gradient:SfGradientView Grid.RowSpan="5">
+                            <gradient:SfGradientView.BackgroundBrush>
+                                <gradient:SfLinearGradientBrush>
+                                    <gradient:SfLinearGradientBrush.GradientStops>
+                                        <gradient:SfGradientStop Color="{StaticResource Dull-Red}" Offset="0.0"/>
+                                        <gradient:SfGradientStop Color="{StaticResource Deep-Purple}" Offset="1.0"/>
+                                    </gradient:SfLinearGradientBrush.GradientStops>
+                                </gradient:SfLinearGradientBrush>
+                            </gradient:SfGradientView.BackgroundBrush>
+                        </gradient:SfGradientView>
+
+                        <!-- Logout Button -->
+                        <Button
+                           Grid.Row="0"
+                           TextColor="{DynamicResource Gray-700}"
+                           FontSize="12"
+                           FontFamily="{DynamicResource Montserrat-Medium}"
+                           HorizontalOptions="End"
+                           VerticalOptions="StartAndExpand"
+                           Clicked="Logout_Clicked"
+                           Text="Logout"
+                           BackgroundColor="{DynamicResource Gray-White}"
+                           >
+                        </Button>
+
+                        <!-- Profile Image -->
+                        <border:SfBorder Margin="0,56,0,8"
+                                     HeightRequest="120"
+                                     WidthRequest="120"
+                                     CornerRadius="60"
+                                     BorderWidth="2"
+                                     HorizontalOptions="CenterAndExpand"
+                                     VerticalOptions="StartAndExpand"
+                                     BorderColor="{DynamicResource Gray-White}"
+                                     BackgroundColor="{DynamicResource Gray-White}">
+
+                            <Image Aspect="AspectFill"
+                               BackgroundColor="{DynamicResource Gray-White}" x:Name="userAvatar">
+                            </Image>
+
+                        </border:SfBorder>
+
+                        <!-- User Full Name -->
+                        <Label x:Name="full_name_label"
+                           Grid.Row="1"
+                           Margin="0,0,0,2"
+                           TextColor="{DynamicResource Gray-White}"
+                           FontSize="20"
+                           FontFamily="{DynamicResource Montserrat-SemiBold}"
+                           HorizontalOptions="CenterAndExpand"
+                           VerticalOptions="StartAndExpand"
+                           LineHeight="{OnPlatform Android=1.5, Default=-1}" />
+
+                        <!-- Username -->
+                        <Label x:Name="username_label"
+                           Grid.Row="2"
+                           TextColor="{DynamicResource Gray-White}"
+                           FontSize="12"
+                           FontFamily="{DynamicResource Montserrat-Medium}"
+                           HorizontalOptions="CenterAndExpand"
+                           VerticalOptions="StartAndExpand"
+                           LineHeight="{OnPlatform Android=1.5, Default=-1}">
+                        </Label>
+
+                        <!-- Refresh Button -->
+                        <Button
+                           Grid.Row="3"
+                           TextColor="{DynamicResource Gray-700}"
+                           HorizontalOptions="CenterAndExpand"
+                           VerticalOptions="StartAndExpand"
+                           Clicked="Refresh_Data"
+                           Text="Refresh"
+                           BackgroundColor="{DynamicResource Gray-White}"
+                            Margin="10,5,10,10"
+                           >
+                        </Button>
+
+                    </Grid>
+
+                    <border:SfBorder Grid.Row="1" Margin="0,-69,0,0" Padding="0,61,0,0" BackgroundColor="{DynamicResource Gray-100}" CornerRadius="14,14,0,0"
+                                 VerticalOptions="Start" BorderWidth="0">
+                        <listView:SfListView SelectionMode="None" ItemSpacing="16,8" ItemSize="74" IsScrollingEnabled="False" AutoFitMode="Height"
+                                         ItemsSource="{Binding CardItems}" x:Name="menu_list" ItemTapped="menu_list_ItemTapped">
+                            <listView:SfListView.ItemTemplate>
+                                <DataTemplate>
+                                    <cards:SfCardView CornerRadius="4" BorderWidth="0" HasShadow="True" WidthRequest="{OnIdiom Phone=343, Default=736}"
+                                                  HorizontalOptions="CenterAndExpand" BackgroundColor="{DynamicResource Gray-White}">
+                                        <Grid RowSpacing="0" Padding="16">
+
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+
+                                            <!-- Title -->
+                                            <Label Text="{Binding Title}" Style="{StaticResource LabelStyle}" />
+
+                                            <!-- Preview -->
+                                            <Label Grid.Row="1" FontSize="12" Style="{StaticResource LabelStyle}" 
+                                               FontFamily="{DynamicResource Montserrat-Medium}" 
+                                               TextColor="{DynamicResource Gray-700}" HeightRequest="18" Text="{Binding Preview}" />
+
+                                            <!-- Icon -->
+                                            <svg:SVGImage Grid.RowSpan="2" 
+                                                      BackgroundColor="Transparent"
+                                                      Source="{Binding ImagePath}"
+                                                      HorizontalOptions="End"
+                                                      VerticalOptions="Center"
+                                                      WidthRequest="32" 
+                                                      HeightRequest="31" />
+
+                                        </Grid>
+                                    </cards:SfCardView>
+                                </DataTemplate>
+                            </listView:SfListView.ItemTemplate>
+                        </listView:SfListView>
+                    </border:SfBorder>
+
+
+                    <cards:SfCardView Grid.Row="0" CornerRadius="4" VerticalOptions="End" Margin="16,0,16,24"  BorderWidth="0" HasShadow="True"  
+                                 BackgroundColor="{DynamicResource Gray-White}" HorizontalOptions="CenterAndExpand" WidthRequest="{OnIdiom Phone=343, Default=736}" >
+
+                        <Grid RowSpacing="0" ColumnSpacing="0" WidthRequest="{OnIdiom Phone=343, Default=480}" 
+                          HeightRequest="90">
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Followers -->
+                            <Label x:Name="user_followers" Style="{StaticResource LabelStyle}" HorizontalOptions="Center"
+                               VerticalOptions="End" />
+
+                            <Label Grid.Row="1" FontSize="12" Text="Followers" Style="{StaticResource LabelStyle}" 
+                               HorizontalOptions="Center" VerticalOptions="Start"
+                               FontFamily="{DynamicResource Montserrat-Medium}" TextColor="{DynamicResource Gray-700}" />
+
+                            <!-- Seperator -->
+                            <BoxView Grid.Column="1" Style="{StaticResource BoxViewStyle}" Grid.RowSpan="2" />
+
+                            <!-- Following -->
+                            <Label Grid.Row="0" Grid.Column="2" x:Name="user_following" Style="{StaticResource LabelStyle}"
+                                HorizontalOptions="Center" VerticalOptions="End" />
+
+                            <Label Grid.Row="1" Grid.Column="2" Text="Following" FontSize="12" Style="{StaticResource LabelStyle}" 
+                               FontFamily="{DynamicResource Montserrat-Medium}" TextColor="{DynamicResource Gray-700}" 
+                               HorizontalOptions="Center" VerticalOptions="Start" />
+
+                            <!-- Seperator -->
+                            <BoxView Grid.Column="3" Style="{StaticResource BoxViewStyle}" Grid.RowSpan="2" />
+
+                            <!-- followers_ratio -->
+                            <Label Grid.Row="0" Grid.Column="4" x:Name="followers_ratio" HorizontalOptions="Center" 
+                               VerticalOptions="End" Style="{StaticResource LabelStyle}" />
+
+                            <Label Grid.Row="1" Grid.Column="4" Text="Follow Ratio" FontSize="12" HorizontalOptions="Center"
+                               VerticalOptions="Start" Style="{StaticResource LabelStyle}" FontFamily="{DynamicResource Montserrat-Medium}" 
+                               TextColor="{DynamicResource Gray-700}" />
+
+                        </Grid>
+                    </cards:SfCardView>
+                </Grid>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
